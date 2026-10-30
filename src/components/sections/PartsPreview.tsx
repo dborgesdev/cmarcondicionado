@@ -1,4 +1,4 @@
-import { getPieces } from "../../lib/api";
+import { getPieces, PIECES_REFRESH_MS } from "../../lib/api";
 import { useResource } from "../../hooks/useResource";
 import {
   EmptyState,
@@ -8,7 +8,7 @@ import {
   PieceCard,
 } from "../ui/Content";
 export default function PartsPreview() {
-  const r = useResource(getPieces, "pieces");
+  const r = useResource(getPieces, "pieces", PIECES_REFRESH_MS);
   return (
     <section id="pecas" className="section parts">
       <div className="container">

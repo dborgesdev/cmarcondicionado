@@ -6,7 +6,7 @@ Implemente a V1 completa do site **CM Ar-Condicionado** no repositório `dborges
 1. Inspecione o repositório e preserve qualquer código/stack existente. Crie **uma branch de implementação**, sem alterar `main` diretamente.
 2. Verifique endpoints WordPress reais e o contrato descrito em `docs/project.md`. Valide capa com `_embed=wp:featuredmedia` e `_fields` que mantenha `featured_media`, `_links`, `_embedded`. Confirme `cm_galeria` para trabalho 36. O PHP atualizado está em `wordpress/cm-trabalhos-rest.php` e requer instalação no WP; se não estiver instalado, registre bloqueio parcial e implemente o frontend com fallback honesto.
 3. Faça a V1 **inteira**, responsiva, com Home, serviços/modal específicos, `/trabalhos`, `/trabalhos/:slug`, `/pecas`, `/pecas/:slug`, header/footer, WhatsApp contextual, SEO e assets individuais.
-4. Utilize dados reais do WP, evitando que o produto de teste `TESTE-CM-001` apareça como oferta pública. Não invente endereço, anos de experiência, certificações, equipe, depoimentos ou imagens de trabalhos.
+4. Utilize dados reais do WP e exiba todas as peças publicadas, independentemente de código ou ID. Não invente endereço, anos de experiência, certificações, equipe, depoimentos ou imagens de trabalhos.
 5. Configure deploy alvo Vercel sem publicar; valide rotas profundas e build de produção.
 6. Execute lint/typecheck/build/testes disponíveis, faça QA de desktop/tablet/mobile, acessibilidade, interações, rede/REST, SEO e qualidade visual. Relate evidências, lacunas e URLs de preview se houver.
 7. **Pare para aprovação visual do usuário antes de commit/push/PR/merge/deploy.**

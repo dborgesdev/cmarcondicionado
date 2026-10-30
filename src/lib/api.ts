@@ -1,15 +1,35 @@
 import type { Term, WPPost } from "../types";
-import { isPublicPiece, normalizePiece, normalizeWork } from "./normalize";
+import { normalizePiece, normalizeWork } from "./normalize";
 const API = "https://painel.cmarcondicionado.com.br/wp-json/wp/v2/";
-const cache = new Map<string, { expires: number; promise: Promise<unknown> }>();
-export function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
+export const PIECES_REFRESH_MS = 300_000;
+const cache = new Map<
+  string,
+  { expires: number; pending: boolean; promise: Promise<unknown> }
+>();
+export function cached<T>(
+  key: string,
+  load: () => Promise<T>,
+  ttl = 300_000,
+): Promise<T> {
   const hit = cache.get(key);
-  if (hit && hit.expires > Date.now()) return hit.promise as Promise<T>;
-  const promise = load().catch((e) => {
-    cache.delete(key);
-    throw e;
-  });
-  cache.set(key, { expires: Date.now() + 300000, promise });
+  if (hit && (hit.pending || hit.expires > Date.now()))
+    return hit.promise as Promise<T>;
+  const entry = {
+    expires: Date.now() + ttl,
+    pending: true,
+    promise: Promise.resolve() as Promise<unknown>,
+  };
+  const promise = load()
+    .then((data) => {
+      entry.pending = false;
+      return data;
+    })
+    .catch((e) => {
+      cache.delete(key);
+      throw e;
+    });
+  entry.promise = promise;
+  cache.set(key, entry);
   return promise;
 }
 async function request<T>(
@@ -20,7 +40,11 @@ async function request<T>(
   Object.entries(params).forEach(([k, v]) =>
     url.searchParams.set(k, String(v)),
   );
-  const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(15000),
+    // The application owns the TTL; expired entries must revalidate HTTP caches.
+    cache: "no-cache",
+  });
   if (!response.ok)
     throw new Error(`Não foi possível carregar os dados (${response.status}).`);
   return {
@@ -60,36 +84,51 @@ export function getWork(slug: string) {
 }
 // Fetch every server page before applying global ACF filters; never filter a partial catalogue.
 export function getPieces() {
-  return cached("pieces", async () => {
-    const all: WPPost[] = [];
-    let page = 1;
-    for (;;) {
+  return cached(
+    "pieces",
+    async () => {
+      const all: WPPost[] = [];
+      let page = 1;
+      for (;;) {
+        const r = await request<WPPost[]>("pecas", {
+          ...embed,
+          acf_format: "standard",
+          status: "publish",
+          per_page: 100,
+          page,
+          orderby: "date",
+          order: "desc",
+        });
+        all.push(...r.data);
+        if (r.totalPages ? page >= r.totalPages : r.data.length < 100) break;
+        page++;
+      }
+      return all.map(normalizePiece);
+    },
+    PIECES_REFRESH_MS,
+  );
+}
+export function getPiece(slug: string) {
+  // The full catalogue already includes content and galleries. Reuse it for
+  // details (including after expiration), rather than repeating a slug request.
+  if (cache.has("pieces")) {
+    return getPieces().then(
+      (items) => items.find((item) => item.slug === slug) ?? null,
+    );
+  }
+  return cached(
+    `piece:${slug}`,
+    async () => {
       const r = await request<WPPost[]>("pecas", {
         ...embed,
         acf_format: "standard",
-        per_page: 100,
-        page,
-        orderby: "date",
-        order: "desc",
+        status: "publish",
+        slug,
       });
-      all.push(...r.data);
-      if (r.totalPages ? page >= r.totalPages : r.data.length < 100) break;
-      page++;
-    }
-    return all.filter(isPublicPiece).map(normalizePiece);
-  });
-}
-export function getPiece(slug: string) {
-  return cached(`piece:${slug}`, async () => {
-    const r = await request<WPPost[]>("pecas", {
-      ...embed,
-      acf_format: "standard",
-      slug,
-    });
-    return r.data[0] && isPublicPiece(r.data[0])
-      ? normalizePiece(r.data[0])
-      : null;
-  });
+      return r.data[0] ? normalizePiece(r.data[0]) : null;
+    },
+    PIECES_REFRESH_MS,
+  );
 }
 export function getTerms(kind: "pieces" | "works") {
   return cached(`terms:${kind}`, async () => {

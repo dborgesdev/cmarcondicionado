@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, ArrowDownRight } from "lucide-react";
-import { getPieces, getTerms } from "../lib/api";
+import { getPieces, getTerms, PIECES_REFRESH_MS } from "../lib/api";
 import { useResource } from "../hooks/useResource";
 import {
   EmptyState,
@@ -13,8 +13,12 @@ import {
 import { ResponsiveImage } from "../components/ui/Gallery";
 import SEO from "../components/ui/SEO";
 export default function Pieces() {
-  const r = useResource(getPieces, "pieces");
-  const terms = useResource(() => getTerms("pieces"), "pieceTerms");
+  const r = useResource(getPieces, "pieces", PIECES_REFRESH_MS);
+  const terms = useResource(
+    () => getTerms("pieces"),
+    "pieceTerms",
+    PIECES_REFRESH_MS,
+  );
   const [params, setParams] = useSearchParams();
   const search = params.get("busca") || "";
   const [input, setInput] = useState(search);

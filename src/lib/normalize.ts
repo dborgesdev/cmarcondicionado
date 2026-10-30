@@ -54,7 +54,6 @@ function base(p: WPPost) {
     cover: mediaPhoto(p._embedded?.["wp:featuredmedia"]?.[0]),
   };
 }
-export { isPublicPiece } from "./piece-policy.mjs";
 export function normalizePiece(p: WPPost): Piece {
   const a = p.acf ?? {};
   const price =

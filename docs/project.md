@@ -30,7 +30,7 @@
 ### Pendências que NÃO devem ser inventadas
 - Logotipo original em arquivo reutilizável e demais imagens institucionais reais (localizar nos materiais disponíveis/repositório; solicitar somente se indisponíveis).
 - Endereço, cidade/região de atendimento, horário, e-mail, CNPJ, anos de atuação, números de clientes, avaliações, garantias, certificações e políticas comerciais: **não publicar sem confirmação**.
-- Fotos reais de trabalhos: somente as que o cliente cadastrar no WordPress. Produto de teste `TESTE-CM-001` é fictício e **não pode ser anunciado como estoque real**.
+- Fotos reais de trabalhos: somente as que o cliente cadastrar no WordPress. Peças: exibir todos os cadastros publicados, independentemente de código ou ID, conforme instrução do proprietário em 30/10/2026.
 - Conteúdo final detalhado dos serviços: os textos propostos abaixo são copy editorial baseada nos tipos de serviço confirmados, não alegações específicas sobre capacidade/resultado.
 - Destino de hospedagem da SPA: preferir Vercel; confirmar domínio, acesso e deploy antes de configurar produção.
 
@@ -61,7 +61,7 @@ Site institucional e catálogo consultivo para visitantes que precisam de instal
 3. **Serviços** — cards fotográficos editoriais com nomes e descrições específicas, CTA “Saiba mais” abre modal do serviço. Variedade compositiva; não somente grade genérica.
 4. **Sobre** — bloco institucional técnico, sem estatísticas inventadas; apresentar o que faz e foco em atendimento. Se não houver história factual, texto enxuto e objetivo.
 5. **Trabalhos realizados** — 6 últimos automaticamente por data desc, capa real, título e categoria quando disponível; CTA “Ver todos os trabalhos” → `/trabalhos`; card abre detalhe ou visualizador com navegação.
-6. **Peças e componentes** — seleção recente de peças realmente publicadas e não fictícias, com imagem, preço condicional, disponibilidade; CTA “Ver todas as peças” → `/pecas`.
+6. **Peças e componentes** — seleção recente de peças publicadas, independentemente de código ou ID, com imagem, preço condicional, disponibilidade; CTA “Ver todas as peças” → `/pecas`.
 7. **CTA final** — faixa azul profundo com mensagem e WhatsApp.
 8. **Footer** — completo, com crédito obrigatório.
 
@@ -128,7 +128,7 @@ Campos observados:
 - `acf.codigo_referencia: string`, `marca_fabricante: string`, `compatibilidade: string`, `estado_peca: 'nova'|'usada'|'recondicionada'`, `preco: string|number`, `exibir_preco: boolean`, `disponibilidade: 'disponivel'|'sob_consulta'|'indisponivel'`, `galeria: {'1'..'5': imageObject|false}`.
 - Galeria ACF com `acf_format=standard`: imagens já possuem `url`, `alt`, `width`, `height`, `sizes`; **não fazer consultas `/media/{id}` por imagem**.
 - Categorias: `GET /wp-json/wp/v2/categorias-pecas`; filtrar usando parâmetro REST real `categorias-pecas={id}` (verificar).
-- O produto `id=29`, código `TESTE-CM-001`, preço R$350 é **fictício**, usado para validar API. Excluí-lo da experiência pública por critério explícito e documentado (por exemplo, excluir ID 29 enquanto for teste) ou remover/despublicar no WP antes do lançamento; não inferir que é estoque real.
+- Exibir todas as peças publicadas no WordPress, independentemente de código ou ID. Não excluir referências iniciadas por `TESTE-CM-` nem IDs específicos. O status de publicação no WordPress determina a inclusão no catálogo; disponibilidade e preço seguem os campos cadastrados.
 - Exibir preço **somente** quando `exibir_preco===true` e `preco` for número válido. Não inventar preço. Estado/disponibilidade devem ser visíveis; tratamento adequado para indisponível.
 - Sanitizar HTML do editor se renderizado; nunca injetar HTML arbitrário sem política de sanitização.
 
@@ -203,7 +203,7 @@ Capa + galeria de fotos reais, navegação acessível entre imagens, descrição
 5. Home mostra os seis trabalhos mais recentes automaticamente; `/trabalhos` permite acessar os demais.
 6. Trabalho individual exibe galeria real; validar shortcode clássico e Gutenberg; falhas da API não quebram layout.
 7. `/pecas` possui busca, filtros **corretos sobre catálogo completo**, paginação; `/pecas/:slug` funciona por URL direta.
-8. Peça exibe imagens, preço condicional, disponibilidade, mensagem WhatsApp contextual; produto fictício de teste não aparece como venda real na publicação.
+8. Peça exibe imagens, preço condicional, disponibilidade e mensagem WhatsApp contextual; todos os cadastros publicados são elegíveis independentemente de código ou ID.
 9. Sem consultas N+1 a mídias; medir rede e validar thumbnails responsivas.
 10. `pnpm typecheck` (ou equivalente), lint, build e testes existentes executados; reportar resultados reais.
 11. Desktop/tablet/mobile, overflow, links, foco/teclado, lightbox/modal, console, SEO e refresh de rotas verificados.
