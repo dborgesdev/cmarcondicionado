@@ -20,14 +20,12 @@ export default function Hero() {
           <span /> SOLUÇÕES EM CLIMATIZAÇÃO
         </p>
         <h1>
-          Climatização
-          <br />
-          com atenção a<br />
-          <em>cada detalhe.</em>
+          Venda, Instalação e Manutenção de
+          <em> Ar-Condicionado</em>
         </h1>
         <p className="hero-description">
-          Instalação, manutenção e conserto de sistemas de ar-condicionado para
-          diferentes necessidades.
+          Cuidamos de cada detalhe da climatização de sua casa ou empresa de
+          acordo com suas necessidades.
         </p>
         <div className="actions">
           <WhatsAppLink>
