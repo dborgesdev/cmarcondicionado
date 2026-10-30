@@ -3468,3 +3468,116 @@ select {
 .service-icon {
   background: #08263ca6;
 }
+
+/* Work cards share the photographic finish and motion of service cards. */
+.works-grid {
+  gap: 28px;
+  align-items: stretch;
+}
+.work-tile {
+  display: block;
+  min-width: 0;
+  height: 100%;
+  color: #fff;
+  text-decoration: none;
+}
+.work-tile .service-body {
+  min-height: 460px;
+}
+.work-tile .service-title {
+  max-width: 26ch;
+  font-size: clamp(1.9rem, 2.6vw, 2.8rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.work-tile .service-description {
+  max-width: 34ch;
+}
+.work-tile .service-more {
+  margin-top: 24px;
+}
+.work-tile .image-missing {
+  background: #153d58;
+}
+.works-carousel {
+  min-width: 0;
+}
+.works-carousel-track {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 8px 4px 26px;
+  margin: -8px -4px 0;
+  overscroll-behavior-x: contain;
+}
+.works-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.works-carousel-track > .work-tile {
+  flex: 0 0 calc((100% - 28px) / 2);
+  height: auto;
+  scroll-snap-align: start;
+}
+.works-carousel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 4px;
+}
+.works-carousel-footer > p {
+  margin: 0;
+  color: #526c80;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+.works-carousel-footer > p span {
+  margin: 0 10px;
+  color: #1266b2;
+}
+.works-carousel-controls {
+  display: flex;
+  gap: 10px;
+}
+.works-carousel-controls button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #a8c3d5;
+  border-radius: 50%;
+  background: transparent;
+  color: #1266b2;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.works-carousel-controls button:hover:not(:disabled) {
+  background: #1266b2;
+  border-color: #1266b2;
+  color: #fff;
+}
+.works-carousel-controls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+@media (max-width: 700px) {
+  .works-carousel-track {
+    gap: 18px;
+  }
+  .works-carousel-track > .work-tile {
+    flex-basis: 86%;
+  }
+  .work-tile .service-body {
+    min-height: 440px;
+  }
+  .works-carousel-footer > p {
+    max-width: 22ch;
+    line-height: 1.7;
+    font-size: 0.65rem;
+  }
+}

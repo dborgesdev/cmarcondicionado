@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { ArrowDownRight } from "lucide-react";
-import { getWorks, getTerms } from "../lib/api";
+import { getWorks, getTerms, WORKS_REFRESH_MS } from "../lib/api";
 import { useResource } from "../hooks/useResource";
 import {
   EmptyState,
@@ -14,8 +14,16 @@ export default function Works() {
   const [params, setParams] = useSearchParams();
   const page = Math.max(1, Math.floor(Number(params.get("pagina")) || 1));
   const type = params.get("tipo") || "";
-  const r = useResource(() => getWorks(page, type), `works:${page}:${type}`);
-  const terms = useResource(() => getTerms("works"), "workTerms");
+  const r = useResource(
+    () => getWorks(page, type),
+    `works:${page}:${type}`,
+    WORKS_REFRESH_MS,
+  );
+  const terms = useResource(
+    () => getTerms("works"),
+    "workTerms",
+    WORKS_REFRESH_MS,
+  );
   return (
     <>
       <SEO title="Trabalhos realizados" />

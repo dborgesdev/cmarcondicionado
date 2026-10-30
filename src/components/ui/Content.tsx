@@ -1,9 +1,16 @@
 import type { ReactNode } from "react";
-import { ArrowRight, RefreshCw, SearchX } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Images,
+  RefreshCw,
+  SearchX,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Piece, Work, Term } from "../../types";
 import { ResponsiveImage } from "./Gallery";
 import { WhatsAppLink } from "./WhatsApp";
+import { useSurfaceMotion } from "../../hooks/useSurfaceMotion";
 export function SectionHeading({
   eyebrow,
   title,
@@ -130,25 +137,36 @@ export function PieceCard({ piece }: { piece: Piece }) {
   );
 }
 export function WorkCard({ work, terms = [] }: { work: Work; terms?: Term[] }) {
+  const motion = useSurfaceMotion();
   return (
-    <Link className="work-card" to={`/trabalhos/${work.slug}`}>
-      <div className="work-image">
-        <ResponsiveImage photo={work.cover} alt={work.name} />
-        <span className="round-arrow">
-          <ArrowRight />
+    <Link
+      {...motion}
+      className="work-tile service-card"
+      to={`/trabalhos/${work.slug}`}
+    >
+      <ResponsiveImage
+        className="service-photo"
+        photo={work.cover}
+        alt={work.name}
+      />
+      <span className="service-light" aria-hidden="true" />
+      <span className="service-icon" aria-hidden="true">
+        <Images size={25} strokeWidth={1.5} />
+      </span>
+      <div className="service-body">
+        <p className="service-subtitle">
+          {terms
+            .filter((t) => work.categories.includes(t.id))
+            .map((t) => t.name)
+            .join(" · ") || "Trabalho realizado"}
+        </p>
+        <h3 className="service-title">{work.name}</h3>
+        <p className="service-description">
+          Conheça as fotografias e os detalhes deste trabalho.
+        </p>
+        <span className="service-more">
+          Ver trabalho e fotos <ArrowUpRight size={21} aria-hidden="true" />
         </span>
-      </div>
-      <div className="work-caption">
-        <div>
-          <p className="eyebrow">
-            {terms
-              .filter((t) => work.categories.includes(t.id))
-              .map((t) => t.name)
-              .join(" · ") || "Trabalho realizado"}
-          </p>
-          <h3>{work.name}</h3>
-        </div>
-        <span aria-hidden="true">↗</span>
       </div>
     </Link>
   );

@@ -60,7 +60,7 @@ Site institucional e catálogo consultivo para visitantes que precisam de instal
 2. **Hero** — atmosfera azul profunda, tipografia de impacto, foto realista de **ar-condicionado split/condensadora familiar ao público**, não maquinaria industrial obscura; overlay para contraste; CTA “Solicitar atendimento”, CTA secundário “Conhecer serviços”. Texto inicial proposto: eyebrow `SOLUÇÕES EM CLIMATIZAÇÃO`; H1 `Climatização com atenção a cada detalhe.`; apoio `Instalação, manutenção e conserto de sistemas de ar-condicionado para diferentes necessidades.` Não afirmar rapidez, economia ou cobertura geográfica não comprovadas.
 3. **Serviços** — cards fotográficos editoriais com nomes e descrições específicas, CTA “Saiba mais” abre modal do serviço. Variedade compositiva; não somente grade genérica.
 4. **Sobre** — bloco institucional técnico, sem estatísticas inventadas; apresentar o que faz e foco em atendimento. Se não houver história factual, texto enxuto e objetivo.
-5. **Trabalhos realizados** — 6 últimos automaticamente por data desc, capa real, título e categoria quando disponível; CTA “Ver todos os trabalhos” → `/trabalhos`; card abre detalhe ou visualizador com navegação.
+5. **Trabalhos realizados** — 6 últimos automaticamente por data desc em carrossel horizontal, com cards lado a lado no desktop e deslize no mobile; capa real, título e categoria quando disponível; CTA “Ver todos os trabalhos” → `/trabalhos`; card abre detalhe ou visualizador com navegação. Cards seguem o acabamento fotográfico da seção de serviços.
 6. **Peças e componentes** — seleção recente de peças publicadas, independentemente de código ou ID, com imagem, preço condicional, disponibilidade; CTA “Ver todas as peças” → `/pecas`.
 7. **CTA final** — faixa azul profundo com mensagem e WhatsApp.
 8. **Footer** — completo, com crédito obrigatório.
@@ -165,7 +165,7 @@ Breadcrumbs, galeria de fotos (imagem destacada + ACF, deduplicadas), detalhes t
 Seis mais recentes; cards fotográficos com hover sutil, título e categoria se existir; link “Ver todos os trabalhos”. Não exibir obra inventada.
 
 ### `/trabalhos`
-Lista completa paginada com busca opcional e filtro por tipo se dados suportarem; foto de capa; título; acesso ao detalhe.
+Grid responsivo de cards uniformes, lado a lado no desktop, com lista completa paginada e filtro por tipo se dados suportarem; foto de capa, título e acesso ao detalhe. Mesmo acabamento fotográfico dos serviços, sem primeiro card expandido nem layout especial para um único registro.
 
 ### `/trabalhos/:slug`
 Capa + galeria de fotos reais, navegação acessível entre imagens, descrição se existir e CTA contextual para serviço semelhante. Se usar lightbox, foco preso, ESC para fechar, botões anterior/próximo, sem impedir acesso à URL individual.

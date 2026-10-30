@@ -1,10 +1,14 @@
-import { getWorks, getTerms } from "../../lib/api";
+import { getWorks, getTerms, WORKS_REFRESH_MS } from "../../lib/api";
 import { useResource } from "../../hooks/useResource";
 import { EmptyState, ErrorState, Loading, SectionHeading } from "../ui/Content";
 import WorksCollection from "../ui/WorksCollection";
 export default function WorksPreview() {
-  const r = useResource(() => getWorks(), "works:1");
-  const terms = useResource(() => getTerms("works"), "workTerms");
+  const r = useResource(() => getWorks(), "works:1:", WORKS_REFRESH_MS);
+  const terms = useResource(
+    () => getTerms("works"),
+    "workTerms",
+    WORKS_REFRESH_MS,
+  );
   return (
     <section id="trabalhos" className="section works">
       <div className="container">
@@ -30,7 +34,7 @@ export default function WorksPreview() {
         ) : !r.data?.items.length ? (
           <EmptyState title="Novos registros serão apresentados por aqui." />
         ) : (
-          <WorksCollection items={r.data.items} terms={terms.data} />
+          <WorksCollection items={r.data.items} terms={terms.data} carousel />
         )}
       </div>
     </section>

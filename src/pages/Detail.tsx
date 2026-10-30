@@ -1,7 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
-import { getPiece, getWork, PIECES_REFRESH_MS } from "../lib/api";
+import {
+  getPiece,
+  getWork,
+  PIECES_REFRESH_MS,
+  WORKS_REFRESH_MS,
+} from "../lib/api";
 import { useResource } from "../hooks/useResource";
 import { pieceMessage, workMessage } from "../lib/whatsapp";
 import type { Piece, Work } from "../types";
@@ -39,7 +44,7 @@ export default function Detail({ kind }: { kind: "piece" | "work" }) {
   const r = useResource<Piece | Work | null>(
     () => (kind === "piece" ? getPiece(slug) : getWork(slug)),
     `${kind}:${slug}`,
-    kind === "piece" ? PIECES_REFRESH_MS : 0,
+    kind === "piece" ? PIECES_REFRESH_MS : WORKS_REFRESH_MS,
   );
   const isPiece = kind === "piece";
   const parent = isPiece ? "/pecas" : "/trabalhos";

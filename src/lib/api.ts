@@ -2,6 +2,7 @@ import type { Term, WPPost } from "../types";
 import { normalizePiece, normalizeWork } from "./normalize";
 const API = "https://painel.cmarcondicionado.com.br/wp-json/wp/v2/";
 export const PIECES_REFRESH_MS = 300_000;
+export const WORKS_REFRESH_MS = 300_000;
 const cache = new Map<
   string,
   { expires: number; pending: boolean; promise: Promise<unknown> }
@@ -40,6 +41,14 @@ async function request<T>(
   Object.entries(params).forEach(([k, v]) =>
     url.searchParams.set(k, String(v)),
   );
+  if (route === "trabalhos" || route === "tipos-trabalho") {
+    // WP REST Cache served an obsolete response even with HTTP no-cache.
+    // Share one URL per five-minute window across visitors, not one per request.
+    url.searchParams.set(
+      "_cm_refresh",
+      String(Math.floor(Date.now() / WORKS_REFRESH_MS)),
+    );
+  }
   const response = await fetch(url, {
     signal: AbortSignal.timeout(15000),
     // The application owns the TTL; expired entries must revalidate HTTP caches.
@@ -62,6 +71,7 @@ export function getWorks(page = 1, type = "") {
       _fields: workFields,
       per_page: 6,
       page,
+      status: "publish",
       orderby: "date",
       order: "desc",
       ...(type ? { "tipos-trabalho": type } : {}),
@@ -77,6 +87,7 @@ export function getWork(slug: string) {
     const r = await request<WPPost[]>("trabalhos", {
       ...embed,
       slug,
+      status: "publish",
       _fields: `${workFields},content,cm_galeria`,
     });
     return r.data[0] ? normalizeWork(r.data[0]) : null;
