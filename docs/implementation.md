@@ -1,3 +1,5 @@
+> Atualização de 30/10/2026: por instrução do proprietário, todas as exclusões de peças por código ou ID foram removidas. As observações sobre exclusão abaixo são históricas e não definem a regra atual. Consulte docs/catalog-refresh-audit.md.
+
 # Estado atual: V2
 
 A revisão visual e a autorização de exibição da peça ID 29 estão documentadas em [v2-audit.md](v2-audit.md). A validação atual está em [v2-validation.md](v2-validation.md). As observações históricas da V1 abaixo sobre item fictício/zero peças foram substituídas pela confirmação explícita do proprietário na V2.
@@ -35,7 +37,7 @@ O build consulta a API pública para gerar metadados estáticos e sitemap. Uma i
 - Galerias clássicas e Gutenberg são atendidas pelo adaptador PHP já fornecido. O caso clássico foi validado na API real; o caso Gutenberg é coberto pelo contrato do adaptador, sem novo post de teste criado no WordPress.
 - Peças usam `_embed=wp:featuredmedia` e `acf_format=standard`. Nenhuma imagem é resolvida com consulta por ID na aplicação.
 - O catálogo busca todas as páginas da API (100 por página) antes de habilitar resultados. Busca textual, categoria, estado, disponibilidade e ordenação são aplicados à coleção completa. Só depois há paginação visual de 12 itens. Isso evita filtrar apenas uma página REST. Para catálogos muito grandes, migrar para endpoint com filtros ACF server-side.
-- A política compartilhada `src/lib/piece-policy.mjs` permite o ID 29, confirmado como peça real pelo proprietário na V2. Outros códigos iniciados por `TESTE-CM-` seguem excluídos. A peça aparece em Home, catálogo, detalhe e sitemap; preço e metadados são os cadastrados no WP.
+- Todas as peças publicadas no WordPress aparecem em Home (seleção recente), catálogo, detalhe e sitemap, independentemente do código ou ID. A antiga política de exclusão foi removida em 30/10/2026; preço e disponibilidade seguem os dados do WP.
 - Preço aparece apenas com `exibir_preco === true`, número finito e não negativo. HTML do WordPress é sanitizado com uma lista restrita de elementos textuais. Galerias vêm do contrato JSON, não do HTML renderizado.
 
 ## SEO e Vercel

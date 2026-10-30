@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { isPublicPiece, normalizePiece, normalizeWork } from "./normalize";
+import { normalizePiece, normalizeWork } from "./normalize";
 import { pieceMessage, whatsapp, workMessage } from "./whatsapp";
 import type { WPPost } from "../types";
 const post = (override: Partial<WPPost> = {}): WPPost => ({
@@ -10,16 +10,11 @@ const post = (override: Partial<WPPost> = {}): WPPost => ({
 });
 afterEach(() => vi.unstubAllGlobals());
 describe("regras do catálogo público", () => {
-  it("publica o ID 29 confirmado pelo proprietário e exclui os demais códigos de teste", () => {
-    expect(
-      isPublicPiece(
-        post({ id: 29, acf: { codigo_referencia: "TESTE-CM-001" } }),
-      ),
-    ).toBe(true);
-    expect(
-      isPublicPiece(post({ acf: { codigo_referencia: "TESTE-CM-002" } })),
-    ).toBe(false);
-    expect(isPublicPiece(post())).toBe(true);
+  it("preserva peças independentemente do ID e do código cadastrado", () => {
+    for (const code of ["TESTE-CM-001", "TESTE-CM-002", "", "OUTRO"])
+      expect(
+        normalizePiece(post({ id: 29, acf: { codigo_referencia: code } })),
+      ).toMatchObject({ id: 29, code });
   });
   it("só revela preços válidos quando explicitamente autorizado", () => {
     for (const preco of ["", undefined, "inválido", -1])

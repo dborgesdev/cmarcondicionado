@@ -1,4 +1,3 @@
-import { isPublicPiece } from "../src/lib/piece-policy.mjs";
 import assert from "node:assert/strict";
 const base = "https://painel.cmarcondicionado.com.br/wp-json/wp/v2/";
 async function get(path) {
@@ -29,7 +28,7 @@ console.log(
       works: listing.data.length,
       embeddedCover: true,
       onDemandGallery: detail.data.cm_galeria.map((p) => p.id),
-      publicPieces: pieces.data.filter(isPublicPiece).length,
+      publicPieces: pieces.data.length,
       taxonomyFilter: true,
       cors: listing.r.headers.get("access-control-allow-origin"),
       paginationHeaders: listing.r.headers.get("access-control-expose-headers"),

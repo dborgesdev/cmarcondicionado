@@ -1,3 +1,5 @@
+> Atualização de 30/10/2026: por instrução do proprietário, todas as exclusões de peças por código ou ID foram removidas. As observações sobre exclusão abaixo são históricas e não definem a regra atual. Consulte docs/catalog-refresh-audit.md.
+
 # Auditoria e direção de arte V2
 
 A V1 foi reprovada visualmente pelo usuário. Revisão na mesma branch `codex/implementacao-v1`, preservando os contratos e a navegação.

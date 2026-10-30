@@ -1,3 +1,5 @@
+> Atualização de 30/10/2026: por instrução do proprietário, todas as exclusões de peças por código ou ID foram removidas. As observações sobre exclusão abaixo são históricas e não definem a regra atual. Consulte docs/catalog-refresh-audit.md.
+
 # Validação da V1 — 29/10/2026
 
 Branch: `codex/implementacao-v1`. Sem commit, push, PR, merge ou deploy.

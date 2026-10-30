@@ -1,4 +1,3 @@
-import { isPublicPiece } from "../src/lib/piece-policy.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 const site = "https://cmarcondicionado.com.br";
 const api = "https://painel.cmarcondicionado.com.br/wp-json/wp/v2/";
@@ -50,7 +49,7 @@ const routes = [
 try {
   const [pieces, works] = await Promise.all([all("pecas"), all("trabalhos")]);
   for (const [kind, rows] of [
-    ["pecas", pieces.filter(isPublicPiece)],
+    ["pecas", pieces],
     ["trabalhos", works],
   ])
     for (const p of rows) {
