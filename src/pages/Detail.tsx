@@ -140,7 +140,7 @@ export default function Detail({ kind }: { kind: "piece" | "work" }) {
                       {[
                         ["Código", piece.code],
                         ["Marca / fabricante", piece.brand],
-                        ["Compatibilidade", piece.compatibility],
+                        ["Aplicação", piece.compatibility],
                       ]
                         .filter(([, v]) => v)
                         .map(([label, value]) => (
